@@ -27,15 +27,31 @@ public class Fireball : MonoBehaviour
     {
         if (collision.CompareTag("Enemy"))
         {
-            // Enemy enemy = collision.GetComponent<Enemy>();
-            // if (enemy != null)
-            //     enemy.TakeDamage(damage);
+            ArcherBot archer = collision.GetComponent<ArcherBot>();
+            if (archer != null)
+            {
+                archer.StartCoroutine("DieRoutine");  // Make sure method name matches
+            }
+            else
+            {
+                EnemyAI enemy = collision.GetComponent<EnemyAI>();
+                if (enemy != null)
+                {
+                    enemy.TakeDamage(damage);
+                }
+            }
 
+            Destroy(gameObject);
+        }
+        else if (collision.CompareTag("Arrow"))
+        {
+            Debug.Log("Fireball hit an arrow!");
+            Destroy(collision.gameObject);
             Destroy(gameObject);
         }
         else if (!collision.CompareTag("Player") && !collision.isTrigger)
         {
-            Destroy(gameObject);
+            Destroy(gameObject, 0.5f);
         }
     }
 }
